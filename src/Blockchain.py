@@ -1,6 +1,9 @@
-from src.Block import Block
+from .Transaction import Transaction
+from .Block import Block
 
 class Blockchain:
+
+	block_reward = 100
 	
 	def __init__(self):
 		self.blockchain = []
@@ -14,10 +17,15 @@ class Blockchain:
 		self.blockchain.append(genesis_block)
 
 	def add_transaction(self, transaction):
-		# add new transaction to unconfirmed transactions
-		self.unconfirmed_transactions.append(transaction)
+		# verify if transaction is valid
+		if transaction.verify() == True:
+			# add new transaction to unconfirmed transactions
+			self.unconfirmed_transactions.append(transaction)
 
-	def mine_block(self):
+	def mine_block(self, miner):
+		# add miner rewards
+		rewards = Blockchain.block_reward
+		self.unconfirmed_transactions.insert(0, Transaction('REWARD', miner, rewards))
 		# get previous block
 		previous_block = self.blockchain[-1]
 		# generate new block from unconfirmed transactions

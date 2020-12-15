@@ -12,6 +12,11 @@ class Transaction:
 
 		self.hash = self.generate_hash()
 
+	def verify(self):
+		if self.amount < 0:
+			return False
+		return True
+
 	def generate_hash(self):
 		transaction_data = str(self.timestamp) + str(self.input) + str(self.output) + str(self.amount)
 		transaction_hash = sha256(transaction_data.encode())
