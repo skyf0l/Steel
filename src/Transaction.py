@@ -1,13 +1,18 @@
 from datetime import datetime
 from hashlib import sha256
 
+from .Wallet import Wallet
+
 class Transaction:
 
 	def __init__(self, input, output, amount):
 		self.timestamp = datetime.now()
 
-		self.input = input
-		self.output = output
+		if input == None:
+			self.input = 'REWARD'
+		else:
+			self.input = input.address
+		self.output = output.address
 		self.amount = amount
 
 		self.hash = self.generate_hash()

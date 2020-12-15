@@ -25,7 +25,7 @@ class Blockchain:
 	def mine_block(self, miner):
 		# add miner rewards
 		rewards = Blockchain.block_reward
-		self.unconfirmed_transactions.insert(0, Transaction('REWARD', miner, rewards))
+		self.unconfirmed_transactions.insert(0, Transaction(None, miner, rewards))
 		# get previous block
 		previous_block = self.blockchain[-1]
 		# generate new block from unconfirmed transactions
