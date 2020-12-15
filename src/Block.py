@@ -21,16 +21,6 @@ class Block:
 		# generate block hash
 		self.hash = self.generate_hash()
 
-	@staticmethod
-	def generate_genesis_block():
-		# no transactions and no previous block
-		transactions = []
-		previous_block = None
-
-		# gen block
-		genesis_block = Block(transactions, previous_block)
-		return genesis_block
-
 	def generate_hash(self):
 		block_data = self.previous_hash + str(self.index) + str(self.timestamp) + str(self.transactions)
 		block_hash = sha256(block_data.encode())

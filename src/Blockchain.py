@@ -8,13 +8,20 @@ class Blockchain:
 	def __init__(self):
 		self.blockchain = []
 		self.unconfirmed_transactions = []
-		self.add_genesis_block()
 
-	def add_genesis_block(self):
-		# generate the genesis block
-		genesis_block = Block.generate_genesis_block()
-		# add the genesis block to blockchain
-		self.blockchain.append(genesis_block)
+	def mine_genesis_block(self, miner):
+		# add miner rewards
+		rewards = Blockchain.block_reward
+		reward_transaction = Transaction.create_reward_transaction(miner, rewards)
+		self.unconfirmed_transactions.insert(0, reward_transaction)
+		# there is no previous block for genesis block
+		previous_block = None
+		# generate new block from unconfirmed transactions
+		new_block = Block(self.unconfirmed_transactions, previous_block)
+		# clear unconfirmed transactions
+		self.unconfirmed_transactions = []
+		# add the new block to blockchain
+		self.blockchain.append(new_block)
 
 	def add_transaction(self, transaction):
 		# verify if transaction is valid
@@ -25,7 +32,8 @@ class Blockchain:
 	def mine_block(self, miner):
 		# add miner rewards
 		rewards = Blockchain.block_reward
-		self.unconfirmed_transactions.insert(0, Transaction(None, miner, rewards))
+		reward_transaction = Transaction.create_reward_transaction(miner, rewards)
+		self.unconfirmed_transactions.insert(0, reward_transaction)
 		# get previous block
 		previous_block = self.blockchain[-1]
 		# generate new block from unconfirmed transactions
