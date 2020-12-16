@@ -5,36 +5,46 @@ from .Wallet import Wallet
 
 class Transaction:
 
-	def __init__(self, inputs, outputs, amount):
+	def __init__(self, inputs, outputs):
 		self.timestamp = datetime.now()
 
 		self.inputs = inputs
 		self.outputs = outputs
-		self.amount = amount
 
 		self.hash = self.generate_hash()
 
 	@staticmethod
 	def create_simple_transaction(input, output, amount):
-		inputs = input.address
-		outputs = output.address
-		transaction = Transaction(inputs, outputs, amount)
+		inputs = {
+			'addr': input.address,
+			'amount': -amount
+		}
+		outputs = {
+			'addr': output.address,
+			'amount': amount
+		}
+		transaction = Transaction(inputs, outputs)
 		return transaction
 
 	@staticmethod
 	def create_reward_transaction(output, amount):
-		inputs = 'REWARD'
-		outputs = output.address
-		transaction = Transaction(inputs, outputs, amount)
+		inputs = {
+			'REWARD'
+		}
+		outputs = {
+			'addr': output.address,
+			'amount': amount
+		}
+		transaction = Transaction(inputs, outputs)
 		return transaction
 
 	def verify(self):
-		if self.amount < 0:
-			return False
+		if self.outputs['amount'] < 0:
+				return False
 		return True
 
 	def generate_hash(self):
-		transaction_data = str(self.timestamp) + str(self.inputs) + str(self.outputs) + str(self.amount)
+		transaction_data = str(self.timestamp) + str(self.inputs) + str(self.outputs)
 		transaction_hash = sha256(transaction_data.encode())
 		return transaction_hash.hexdigest()
 
@@ -44,4 +54,3 @@ class Transaction:
 		print(tabs + 'Timestamp: {}'.format(self.timestamp))
 		print(tabs + 'Input: {}'.format(self.inputs))
 		print(tabs + 'Output: {}'.format(self.outputs))
-		print(tabs + 'Amount: {}'.format(self.amount))
