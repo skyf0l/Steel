@@ -1,7 +1,19 @@
 from datetime import datetime
-from hashlib import sha256
+from .Config import hash_function
 
 from .Wallet import Wallet
+
+class TransactionInput:
+
+	def __init__(self):
+		self.unlocking_script = ''
+
+class TransactionOutput:
+
+	def __init__(self):
+		self.value = 0
+		self.locking_script = ''
+		self
 
 class Transaction:
 
@@ -45,7 +57,7 @@ class Transaction:
 
 	def generate_hash(self):
 		transaction_data = str(self.timestamp) + str(self.inputs) + str(self.outputs)
-		transaction_hash = sha256(transaction_data.encode())
+		transaction_hash = hash_function(transaction_data.encode())
 		return transaction_hash.hexdigest()
 
 	def print(self, tab_count=0):

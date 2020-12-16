@@ -1,12 +1,12 @@
 import ecdsa
-from hashlib import sha256
+from .Config import hash_function
 
 class Wallet:
 
 	def __init__(self, name):
 		self.address = name
 
-		sk = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1, hashfunc=sha256)
+		sk = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1, hashfunc=hash_function)
 
 		self.privatekey = sk
 		self.publickey = sk.get_verifying_key()

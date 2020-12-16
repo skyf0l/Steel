@@ -1,5 +1,5 @@
 from datetime import datetime
-from hashlib import sha256
+from .Config import hash_function
 
 class Block:
 
@@ -23,7 +23,7 @@ class Block:
 
 	def generate_hash(self):
 		block_data = self.previous_hash + str(self.index) + str(self.timestamp) + str(self.transactions)
-		block_hash = sha256(block_data.encode())
+		block_hash = hash_function(block_data.encode())
 		return block_hash.hexdigest()
 
 	def print(self):
